@@ -1,99 +1,160 @@
 ---
 name: searxng-search
 description: |
-  使用自托管 SearXNG 搜索引擎进行搜索。SearXNG 是一个免费的元搜索引擎，
-  聚合 200+ 搜索引擎（Google, Bing, Brave, GitHub 等），完全免费且可自托管。
-  触发条件：用户需要搜索查询、调研信息、查找资源等。
+  Use self-hosted SearXNG search engine. SearXNG is a free meta search engine that aggregates 200+ search engines (Google, Bing, Brave, GitHub, etc.), completely free and self-hostable.
+  Trigger: User needs to search queries, research information, find resources, etc.
 ---
 
-# SearXNG Search - 搜索工具
+# SearXNG Search - Search Tool | 搜索工具
+
+Use SearXNG self-hosted search API for fast, accurate searching.
 
 使用 SearXNG 自托管搜索 API 进行快速、准确的搜索。
 
-## 前置条件
-
-### 安装 SearXNG
+## Quick Start | 快速开始
 
 ```bash
-# 1. 安装 uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
-export PATH="$HOME/.local/bin:$PATH"
+# One-click install and start | 一键安装 + 启动
+searxng-search install
 
-# 2. 克隆 SearXNG
-git clone --depth 1 https://github.com/searxng/searxng.git ~/projects/searxng
-
-# 3. 创建虚拟环境
-cd ~/projects/searxng
-uv venv .venv
-uv pip install -r requirements.txt
-
-# 4. 启用 JSON API
-sed -i 's/  formats:/  formats:\n    - json/' searx/settings.yml
-
-# 5. 启动服务
-SEARXNG_SECRET=mysecretkey .venv/bin/python -m searx.webapp --host 127.0.0.1 --port 8888 &
+# Use | 使用
+searxng-search search "your query"
 ```
 
-### 启动/停止
+## Command List | 命令列表
+
+| Command | Description | 说明 |
+|---------|-------------|------|
+| install | One-click install SearXNG | 一键安装 SearXNG |
+| start | Start service | 启动服务 |
+| stop | Stop service | 停止服务 |
+| restart | Restart service | 重启服务 |
+| status | Check service status | 查看服务状态 |
+| search \<query\> | Search | 搜索 |
+| enable | Enable auto-start | 开机自启 |
+| disable | Disable auto-start | 取消开机自启 |
+
+## Installation | 安装 (install)
+
+Automatically completes: | 自动完成以下步骤：
+1. Install uv (if not installed) | 安装 uv (如未安装)
+2. Clone SearXNG to ~/projects/searxng | 克隆 SearXNG 到 ~/projects/searxng
+3. Create Python virtual environment | 创建 Python 虚拟环境
+4. Install dependencies | 安装依赖
+5. Enable JSON API | 启用 JSON API
+6. Start service | 启动服务
 
 ```bash
-# 启动
-cd ~/projects/searxng
-SEARXNG_SECRET=mysecretkey .venv/bin/python -m searx.webapp --host 127.0.0.1 --port 8888 &
+searxng-search install
+```
 
-# 停止
-pkill -f searx.webapp
+### Configuration | 配置
 
-# 检查状态
+After installation, configure: | 安装后可配置以下环境变量：
+- `SEARXNG_PORT` - Port (default 8888) | 端口 (默认 8888)
+- `SEARXNG_HOST` - Bind address (default 127.0.0.1) | 绑定地址 (默认 127.0.0.1)
+- `SEARXNG_SECRET` - Auth key (auto-generated) | 认证密钥 (自动生成)
+
+## Service Management | 服务管理
+
+```bash
+# Start | 启动
+searxng-search start
+
+# Stop | 停止
+searxng-search stop
+
+# Restart | 重启
+searxng-search restart
+
+# Status | 状态
+searxng-search status
+
+# Enable auto-start | 开机自启
+searxng-search enable
+
+# Disable auto-start | 取消自启
+searxng-search disable
+```
+
+## Search | 搜索
+
+### Command Line | 命令行
+
+```bash
+searxng-search search "Python Tutorial"
+
+# Specify engine | 指定引擎
+searxng-search search "git clone" --engine github
+
+# Specify language | 指定语言
+searxng-search search "AI News" --lang zh
+
+# Pagination | 分页
+searxng-search search "llm" --page 2
+
+# Time filter | 时间过滤
+searxng-search search "python" --time-range month
+```
+
+### API Call | API 调用
+
+```bash
+# Basic search | 基本搜索
 curl "http://127.0.0.1:8888/search?q=test&format=json"
-```
 
-## 使用方法
-
-### API 调用
-
-```bash
-# 基本搜索
-curl "http://127.0.0.1:8888/search?q=llm&format=json"
-
-# 指定引擎和语言
+# Specify engine and language | 指定引擎和语言
 curl "http://127.0.0.1:8888/search?q=python&format=json&engines=github&lang=en"
 
-# 分页
-curl "http://127.0.0.1:8888/search?q=AI&format=json&page=2"
-
-# 时间过滤
+# Time filter | 时间过滤
 curl "http://127.0.0.1:8888/search?q=llm&format=json&time_range=month"
 ```
 
-### 参数说明
+## Parameter Reference | 参数说明
 
-| 参数 | 说明 | 示例 |
-|------|------|------|
-| q | 搜索关键词 | llm agent |
-| format | 输出格式 | json |
-| engines | 指定引擎 | google,brave,github |
-| lang | 语言 | zh, en, auto |
-| page | 页码 | 1, 2, 3 |
-| time_range | 时间范围 | day, week, month, year |
-| safesearch | 安全搜索 | 0, 1, 2 |
+### search parameters | search 参数
 
-## 可用引擎
+| Parameter | Short | Description | Example |
+|-----------|-------|-------------|---------|
+| --engine | -e | Specify engine | github, google |
+| --lang | -l | Language | zh, en, auto |
+| --page | -p | Page number | 1, 2, 3 |
+| --time-range | -t | Time range | day, week, month, year |
+| --safe-search | -s | Safe search | 0, 1, 2 |
+
+### Available Engines | 可用引擎
+
+General: google, bing, brave, duckduckgo, yandex, startpage, qwant
+Code/Dev: github, gitlab, stackoverflow, npm, pypi
+Academic: arxiv, pubmed, wikipedia, google-scholar
+Video/Image: youtube, vimeo, pexels, pixabay
 
 通用搜索：google, bing, brave, duckduckgo, yandex, startpage, qwant
 代码/开发：github, gitlab, stackoverflow, npm, pypi
 学术：arxiv, pubmed, wikipedia, google-scholar
 视频/图片：youtube, vimeo, pexels, pixabay
 
-## 错误处理
+## Troubleshooting | 故障排除
 
-| 错误 | 原因 | 解决方案 |
-|------|------|---------|
-| connection refused | 服务未运行 | 启动 SearXNG |
-| 403 Forbidden | JSON 未启用 | 编辑 settings.yml |
-| timeout | 引擎被封 | 换引擎 |
+| Problem | Cause | Solution |
+|---------|-------|----------|
+| connection refused | Service not running | `searxng-search start` |
+| 403 Forbidden | JSON not enabled | Re-run `install` |
+| timeout | Engine blocked | Change engine or add proxy |
+| Install failed | Permission issue | Check uv path |
 
-## 相关文档
+## Project Structure | 项目结构
 
-- SearXNG 官方文档: https://docs.searxng.org
-- GitHub: https://github.com/searxng/searxng
+```
+searxng-search/
+├── SKILL.md
+├── scripts/
+│   └── searxng_cli.py      # CLI main program
+└── references/
+    └── settings.yml        # SearXNG config
+```
+
+## Related Documentation | 相关文档
+
+- [SearXNG Official Docs](https://docs.searxng.org) | [SearXNG 官方文档](https://docs.searxng.org)
+- [GitHub](https://github.com/searxng/searxng)
