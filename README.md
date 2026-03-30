@@ -1,5 +1,8 @@
 # SearXNG Search CLI
 
+> **ClawHub**: https://clawhub.ai/leeshunee/searxng-search-cli | `clawhub install searxng-search-cli`
+
+
 使用 SearXNG 自托管搜索 API 进行快速、准确的搜索。
 
 ## 安装
