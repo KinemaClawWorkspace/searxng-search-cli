@@ -1,7 +1,7 @@
 ---
 name: searxng-search-cli
 displayName: "SearXNG Search CLI (Free, Self-hosted, Auto-deploy, Multi-Channel)"
-version: 1.2.0
+version: 1.2.1
 description: |
   Use self-hosted SearXNG search engine (Free, Self-hosted, Auto-deploy, Multi-Channel). SearXNG is a free meta search engine that aggregates 200+ search engines (Google, Bing, Brave, GitHub, etc.), completely free and self-hostable.
   Trigger: User needs to search queries, research information, find resources, etc.
@@ -11,6 +11,7 @@ description: |
 
 - **Author**: [LeeShunEE](https://github.com/LeeShunEE)
 - **Organization**: [KinemaClawWorkspace](https://github.com/KinemaClawWorkspace)
+- **GitHub**: https://github.com/KinemaClawWorkspace/searxng-search-cli
 
 Use SearXNG self-hosted search API for fast, accurate searching.
 
