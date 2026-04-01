@@ -35,6 +35,12 @@ searxng-search search "git clone" --engine github
 
 # Specify language | 指定语言
 searxng-search search "AI News" --lang zh
+
+# Pagination | 分页
+searxng-search search "llm" --page 2
+
+# Time filter | 时间过滤
+searxng-search search "python" --time-range month
 ```
 
 ## Command List | 命令列表
@@ -54,29 +60,9 @@ searxng-search search "AI News" --lang zh
 
 - `SEARXNG_PORT` - Port (default 8888) | 端口 (默认 8888)
 - `SEARXNG_HOST` - Bind address (default 127.0.0.1) | 绑定地址 (默认 127.0.0.1)
-- `SEARXNG_SECRET` - Auth key (auto-generated) | 认证密钥 (自动生成)
+- `SEARXNG_SECRET` - Auth key (auto-generated if not set) | 认证密钥 (自动生成)
 
-## Search Usage | 搜索用法
-
-### CLI | 命令行
-
-```bash
-searxng-search search "Python Tutorial"
-searxng-search search "git clone" --engine github
-searxng-search search "AI News" --lang zh
-searxng-search search "llm" --page 2
-searxng-search search "python" --time-range month
-```
-
-### API Call | API 调用
-
-```bash
-curl "http://127.0.0.1:8888/search?q=test&format=json"
-curl "http://127.0.0.1:8888/search?q=python&format=json&engines=github&lang=en"
-curl "http://127.0.0.1:8888/search?q=llm&format=json&time_range=month"
-```
-
-## Parameter Reference | 参数说明
+## Search Parameters | 搜索参数
 
 | Parameter | Short | Description | Example |
 |-----------|-------|-------------|---------|
@@ -85,6 +71,7 @@ curl "http://127.0.0.1:8888/search?q=llm&format=json&time_range=month"
 | --page | -p | Page number | 1, 2, 3 |
 | --time-range | -t | Time range | day, week, month, year |
 | --safe-search | -s | Safe search | 0, 1, 2 |
+| --limit | | Max results (default 5) | 10 |
 
 ### Available Engines | 可用引擎
 
@@ -93,7 +80,13 @@ Code/Dev: github, gitlab, stackoverflow, npm, pypi
 Academic: arxiv, pubmed, wikipedia, google-scholar
 Video/Image: youtube, vimeo, pexels, pixabay
 
+## Known Limitations | 已知限制
+
+- **部分引擎不稳定**：DuckDuckGo 可能触发 CAPTCHA、Brave 可能 403，属上游外部限制
+- **首次搜索较慢**：可能需要 5-30 秒，后续请求会加速
+- **推荐部署在有稳定网络出口的宿主机上**
+
 ## Related Documentation | 相关文档
 
 - [SearXNG Official Docs](https://docs.searxng.org) | [SearXNG 官方文档](https://docs.searxng.org)
-- [GitHub](https://github.com/searxng/searxng)
+- [GitHub](https://github.com/searxng/searx)
